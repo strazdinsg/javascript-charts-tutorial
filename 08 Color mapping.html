@@ -1,0 +1,175 @@
+<html>
+<head>
+    <title>Color mapping</title>
+
+    <!--
+    This example shows how we can map different categorical attribute values to colors.
+    I.e., the data itself does not include the color. The mapping from data values to colors is made
+    in Javascript, not the data generation side.
+     -->
+
+    <script type="text/javascript" src="javascripts/d3.min.js"></script>
+
+    <style type="text/css">
+        .bar {
+            padding: 3px;
+            margin: 1px;
+            height: 20px;
+            font-family: sans-serif;
+            font-size: 10px;
+            border: 1px solid black;
+            line-height: 20px;
+        }
+
+        .chart-container {
+            margin-bottom: 50px;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>GDP per capita, M USD</h1>
+<!-- This is the placeholder for bar chart: GDP per capita -->
+<div id="gdp-pc-chart-container" class="chart-container">
+
+</div>
+
+<!-- This is the placeholder for another bar chart -->
+<h1>GDP in total, M USD</h1>
+<div id="gdp-chart-container" class="chart-container">
+
+</div>
+
+
+<script type="text/javascript">
+
+    // Define our data values as an array (list) of objects. Instead of holding plain integers,
+    // each object now has several attributes:
+    // * country, categorical
+    // * GDP in 2017, PPP, M USD, quantitative
+    // * population
+    // Nordic country 2017-estimated data from:
+    // https://en.wikipedia.org/wiki/Norway
+    // https://en.wikipedia.org/wiki/Sweden
+    // https://en.wikipedia.org/wiki/Denmark
+    // https://en.wikipedia.org/wiki/Iceland
+    // https://en.wikipedia.org/wiki/Finland
+    var country_data = [
+        {country: "Norway", gdp: 377.100, population: 5267146},
+        {country: "Sweden", gdp: 498.130, population: 10065389},
+        {country: "Denmark", gdp: 264.837, population: 5748769},
+        {country: "Finland", gdp: 239.662, population: 5506312},
+        {country: "Iceland", gdp: 18.000, population: 332529}
+    ];
+
+
+    // List of allowed colors - these values we keep in our visualization (does not come from data source)
+    // Color map created using http://www.colorbrewer2.org
+    var COLOR_MAP = [
+        {color: "#e41a1c", country: null},
+        {color: "#4daf4a", country: null},
+        {color: "#984ea3", country: null},
+        {color: "#ff7f00", country: null},
+        {color: "#ffff33", country: null},
+        {color: "#a65628", country: null},
+        {color: "#f781bf", country: null},
+        {color: "#377eb8", country: null}
+    ];
+
+    ////////////////////////////////////////////
+    // GDP per capita chart
+    ////////////////////////////////////////////
+
+    // Select the div which will contain our bars
+    var perCapitaChart = d3.select("#gdp-pc-chart-container");
+
+
+    // Create the new divs - one for each data value
+    var pcBarDivs = perCapitaChart.selectAll("div")
+        .data(country_data)
+        .enter()
+        .append("div");
+
+    // Set class="bar"
+    pcBarDivs.attr("class", "bar");
+
+    // Use the attributes to set width and color
+    pcBarDivs.style("width", function (countryData) {
+        return getGdpPerCapita(countryData) * 3 + "px";
+    });
+    pcBarDivs.style("background-color", function (countryData) {
+        return getColor(countryData.country);
+    });
+
+    // Set the text
+    pcBarDivs.text(function (countryData) {
+        return countryData.country + ": $" + getGdpPerCapita(countryData) + "M";
+    });
+
+
+
+    ////////////////////////////////////////////
+    // Total GDP chart
+    ////////////////////////////////////////////
+    // Select the div which will contain our bars
+    var gdpChart = d3.select("#gdp-chart-container");
+
+
+    // Create the new divs - one for each data value
+    var gdpBarDivs = gdpChart.selectAll("div")
+        .data(country_data)
+        .enter()
+        .append("div");
+
+    // Set class="bar"
+    gdpBarDivs.attr("class", "bar");
+
+    // Use the attributes to set width and color
+    gdpBarDivs.style("width", function (countryData) {
+        return Math.round(countryData.gdp) * 3 + "px";
+    });
+    gdpBarDivs.style("background-color", function (countryData) {
+        return getColor(countryData.country);
+    });
+
+    // Set the text
+    gdpBarDivs.text(function (countryData) {
+        return countryData.country + ": $" + Math.round(countryData.gdp) + "M";
+    });
+
+
+
+    ////////////////////////////////////////////
+    // Functions
+    ////////////////////////////////////////////
+
+    // Calculate GPD per capita, round to millions with three decimal digits
+    function getGdpPerCapita(countryData) {
+        return Math.round(countryData.gdp * 1000000000 / countryData.population) / 1000;
+    }
+
+    // This function defines mapping between countries and colors. It has a list of allowed colors.
+    // Once a new country value is received, a new color from the map is assigned to the country.
+    // Next time when we want to get color for the same country, the same color will be returned
+    function getColor(country) {
+        for (var i = 0; i < COLOR_MAP.length; ++i) {
+            if (COLOR_MAP[i].country === country) {
+                // Country already registered, return color for it
+                return COLOR_MAP[i].color;
+            } else if (!COLOR_MAP[i].country) {
+                // No more countries registered in the color map, assign this country to a new color
+                COLOR_MAP[i].country = country;
+                return COLOR_MAP[i].color;
+            }
+        }
+
+        // No more space in the color map, return null
+        return null;
+    }
+
+</script>
+
+</body>
+
+</html>
