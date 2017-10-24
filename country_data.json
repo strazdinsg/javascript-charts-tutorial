@@ -1,0 +1,27 @@
+[
+  {
+    "country": "Norway",
+    "gdp": 377.100,
+    "population": 5267146
+  },
+  {
+    "country": "Sweden",
+    "gdp": 498.130,
+    "population": 10065389
+  },
+  {
+    "country": "Denmark",
+    "gdp": 264.837,
+    "population": 5748769
+  },
+  {
+    "country": "Finland",
+    "gdp": 239.662,
+    "population": 5506312
+  },
+  {
+    "country": "Iceland",
+    "gdp": 18.000,
+    "population": 332529
+  }
+]

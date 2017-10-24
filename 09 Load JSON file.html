@@ -1,0 +1,130 @@
+<html>
+<head>
+    <title>Loading data from JSON file</title>
+
+    <!--
+    This example is similar to the previous one. The only difference is loading data from a JSON file.
+     -->
+
+    <script type="text/javascript" src="javascripts/d3.min.js"></script>
+
+    <style type="text/css">
+        .bar {
+            padding: 3px;
+            margin: 1px;
+            height: 20px;
+            font-family: sans-serif;
+            font-size: 10px;
+            border: 1px solid black;
+            line-height: 20px;
+        }
+    </style>
+
+</head>
+<body>
+
+
+
+<p>This example will only work if you serve this website from a server. If you use WebStorm editor,
+    open it with View > Open in Browser > ... . If you open this as a local HTML file, your browser will not allow
+    to request the JSON file - reading local files is not allowed as a rule.</p>
+<p>There is one important consequence: we can not load the chart directly when the page is loaded.
+Instead, we request the JSON file and </p>
+
+<h1>GDP per capita, M USD</h1>
+
+<!-- This is the placeholder for bar chart: GDP per capita -->
+<div id="gdp-pc-chart-container" class="chart-container">
+
+</div>
+
+
+
+<script type="text/javascript">
+
+    // Send request to read JSON file content, and when a successful response is received,
+    // call the loadChart() function. The data is passed as parameter to the function.
+    d3.json("country_data.json", loadChart);
+
+    // List of allowed colors - these values we keep in our visualization (does not come from data source)
+    // Color map created using http://www.colorbrewer2.org
+    var COLOR_MAP = [
+        {color: "#e41a1c", country: null},
+        {color: "#4daf4a", country: null},
+        {color: "#984ea3", country: null},
+        {color: "#ff7f00", country: null},
+        {color: "#ffff33", country: null},
+        {color: "#a65628", country: null},
+        {color: "#f781bf", country: null},
+        {color: "#377eb8", country: null}
+    ];
+
+    // The chart is not shown right now, only when we get response JSON data
+
+
+    // This function is called when response from the JSON data request comes
+    function loadChart(country_data) {
+        // Select the div which will contain our bars
+        var perCapitaChart = d3.select("#gdp-pc-chart-container");
+
+
+        // Create the new divs - one for each data value
+        var pcBarDivs = perCapitaChart.selectAll("div")
+            .data(country_data)
+            .enter()
+            .append("div");
+
+        // Set class="bar"
+        pcBarDivs.attr("class", "bar");
+
+        // Use the attributes to set width and color
+        pcBarDivs.style("width", function (countryData) {
+            return getGdpPerCapita(countryData) * 3 + "px";
+        });
+        pcBarDivs.style("background-color", function (countryData) {
+            return getColor(countryData.country);
+        });
+        // Set the text
+        pcBarDivs.text(function (countryData) {
+            return countryData.country + ": $" + getGdpPerCapita(countryData) + "M";
+        });
+    }
+
+
+
+
+
+
+    ////////////////////////////////////////////
+    // Functions
+    ////////////////////////////////////////////
+
+    // Calculate GPD per capita, round to millions with three decimal digits
+    function getGdpPerCapita(countryData) {
+        return Math.round(countryData.gdp * 1000000000 / countryData.population) / 1000;
+    }
+
+    // This function defines mapping between countries and colors. It has a list of allowed colors.
+    // Once a new country value is received, a new color from the map is assigned to the country.
+    // Next time when we want to get color for the same country, the same color will be returned
+    function getColor(country) {
+        for (var i = 0; i < COLOR_MAP.length; ++i) {
+            if (COLOR_MAP[i].country === country) {
+                // Country already registered, return color for it
+                return COLOR_MAP[i].color;
+            } else if (!COLOR_MAP[i].country) {
+                // No more countries registered in the color map, assign this country to a new color
+                COLOR_MAP[i].country = country;
+                return COLOR_MAP[i].color;
+            }
+        }
+
+        // No more space in the color map, return null
+        return null;
+    }
+
+</script>
+
+</body>
+
+</html>
