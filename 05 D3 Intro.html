@@ -1,0 +1,90 @@
+<html>
+<head>
+    <title>D3.js introduction</title>
+
+    <!-- D3.js is a Javascript library that allows you to bind data to DOM elements.
+    As a result, the DOM can represent the data you have.
+
+    To import the D3.js library we have to include a Javascript file. You can either download one here:
+    https://d3js.org/
+    Or you can link to an online Javascript file: https://d3js.org/d3.v4.min.js (Make sure you always use
+    the correct version in the filename)
+     -->
+
+    <!-- Here we include the D3.js library -->
+    <script type="text/javascript" src="javascripts/d3.min.js"></script>
+
+
+    <script type="text/javascript">
+        // Here we have code that will modify the DOM elements according to our data.
+        // Currently we don't have any data, we will just do some static attribute updates for
+        // our paragraph elements
+
+        // D3 allows you to select several elements at once (you can use the same CSS selector syntax):
+        var allParagraphs = d3.selectAll("p");
+        // Then you can set style attributes for the selected elements
+        allParagraphs.style("font-size", "20px");
+
+        // We can print out to Javascript console:
+        console.log("Number or paragraphs selected at first: " + allParagraphs.size());
+
+
+        // You will probably see that nothing happens: allParagraphs returns zero DOM elements. Why is that?
+        // Because at this point, there are no <p> elements created in the document. If you want to run
+        // the Javascript code, when the whole DOM document is loaded (including all the <p> elements),
+        // either include the code in the end of the document (see below), or use addEventListener
+        // See example here: https://developer.mozilla.org/en-US/docs/Web/Events/DOMContentLoaded
+    </script>
+
+    <style>
+        p {
+            margin: 5px;
+            padding: 20px;
+            border: 1px dotted #0b0530;
+        }
+    </style>
+
+</head>
+<body>
+
+<p>This is paragraph #1.</p>
+<p>This is paragraph #2.</p>
+<p>This is paragraph #3.</p>
+<p>This is paragraph #4.</p>
+
+<script type="text/javascript">
+    // At this type all the paragraphs should be loaded already
+
+    var allParagraphs = d3.selectAll("p");
+    // We can print out to Javascript console:
+    console.log("Number or paragraphs selected at the bottom of body tag: " + allParagraphs.size());
+    allParagraphs.style("color", "#011aff");
+
+    // We can also set the attributes of elements dynamically: instead of a static value we specify
+    // a function. This function will be executed for every element. And the result of the function
+    // will be used as the attribute value. Let's set background color differently based on the
+    // index of the paragraph in our list of selected paragraphs:
+
+    allParagraphs.style("background-color", oddEvenColor);
+
+    // This function returns one color if the index is odd and another color for even index
+    function oddEvenColor(data, index) {
+        if ((index % 2) === 0) {
+            return "#ffffff";
+        } else {
+            return "#dcf1ff";
+        }
+    }
+
+    // Here we use only the index. We will use the data parameter in later examples.
+
+    // We can also use the function directly inline the attribute change call. The syntax is a bit weird,
+    // you just have to get used to it :)
+
+    allParagraphs.style("width", function(data, index) { return 200 + index * 50; });
+
+</script>
+
+</body>
+
+</html>
