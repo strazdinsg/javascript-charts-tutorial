@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>Element hierarchy</title>
+
+    <!--
+        We can change the visual looks of HTML elements using Cascading Style Sheets (CSS) language.
+        The following tag sets some attributes for all DIV elements, for one specific SPAN, identified by a
+        specific ID, and for all paragraphs having specific class.
+    -->
+    <style type="text/css">
+        /* This is a comment inside CSS stylesheet. Here the comments are opened and closed differenttly
+            from HTML
+         */
+        div {
+            border-color: black;
+            border-style: solid;
+            border-radius: 3px;
+            margin: 10px; /** Empty space Outside the element */
+            padding: 20px; /** Empty space Inside the element */
+            font-family: Calibri,sans-serif;
+
+        }
+
+        /* Here we set style for one element with specific ID */
+        #our-special-span {
+            color: green;
+            font-size: 2em;
+        }
+
+        /* All paragraph elements which have class="red" */
+        p.red {
+            color: #8e1616; /* This is another way to specify color. See some explanation here:
+                                https://www.quackit.com/css/css_color_codes.cfm  */
+        }
+
+        /* For all possible CSS selectors, see Cheat Sheet: http://www.cheetyr.com/css-selectors */
+    </style>
+
+
+</head>
+<body>
+
+<p>
+    DOM Elements also have different attributes. You can change them in several ways:
+</p>
+<ol>
+    <li>Inline: set element attributes directly, inside the tag.</li>
+    <li>Using Stylesheets. We use it here to set border and margin for all div elements.</li>
+    <li>Using Javascript - will cover in later examples.</li>
+</ol>
+
+
+<p>Here we show how to change some DOM element attributes inside the elements tags.
+    The structure of the elements is the same, only the style is changed
+</p>
+
+<!-- Set width of this div to 80% of it's allowed area (parent width) -->
+<div style="width: 80%;">
+    This is our main Div element. Try resizing browser window to see the width change.
+
+    <div>
+        This is child Div #1.
+    </div>
+
+    <!-- Set width of this div to 200 pixels -->
+    <div style="width: 200px;">
+        This is child Div #2. It contains one heading and three paragraphs inside it.
+        <h1>This is the heading.</h1>
+        <!-- We mark the class of some elements. This class will be used in the CSS to assign styles to them. -->
+        <p class="red">This is child paragraph #1 inside Div #1.</p>
+        <p>This is child paragraph #2 inside Div #1.</p>
+        <p  class="red">This is child paragraph #3 inside Div #1.</p>
+    </div>
+
+    <div>
+        This is child Div #3. It contains two Span elements inside it.
+        <span id="our-special-span">This is the first span. </span>
+        <span>This is the second span. By default Spans stay in the same line while div elements start in another line.</span>
+    </div>
+
+</div>
+
+</body>
+
+</html>
