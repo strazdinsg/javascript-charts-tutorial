@@ -1,0 +1,126 @@
+<html>
+<head>
+    <title>Javascript introduction</title>
+
+    <!-- Javascript is a very powerful way to dynamically update the DOM elements.
+    With Javascript you can change the structure and design of the page, based on your
+    website (business) logic.
+     -->
+
+    <style type="text/css">
+        div {
+            border: 2px dashed black;
+            margin: 10px; /** Empty space Outside the element */
+            padding: 20px; /** Empty space Inside the element */
+            font-family: Calibri,sans-serif;
+
+        }
+
+        #special-element {
+            font-size: 2em;
+        }
+
+        button {
+            font-size: 20px;
+        }
+
+    </style>
+
+    <!-- You can write Javascript code in several ways:
+    1) Create a <script> tag anywhere in the page
+    2) Create a <script> tag with src="..." attribute - this will include an external javascript file into the site.
+    3) Inline - for example, you can run javascript function on button press, see below.
+    -->
+
+    <script type="text/javascript">
+        // Here we have some Javascript code
+
+        // Notice other syntax of comments again.
+
+        /* You can also have the same multi-line comment as in CSS.
+         *
+         * Javascript syntax is similar to Java and also PHP. Some of concepts are different. For example,
+         * a function is always considered also an object.
+         */
+
+
+        var color1 = "green"; // Here we define one global variable with name color1 and value green
+        var color2 = "#0000bb"; // Here we define another global variable
+
+        // Here we define a function. Now we are able to call that function whenever we need it.
+        // It has one parameter: color. We pass a value to this parameter when we call the function.
+
+
+        function setDivColor(color) {
+            // In this function we set color four our special span
+
+            // First we find the span
+            var ourSpecialElement = document.getElementById("special-element");
+            if (ourSpecialElement) {
+                // If we found it, change the color
+                ourSpecialElement.style.color = color;
+            }
+        }
+
+        // This function turns the highlight on or off. When parameter "highlight" is true, enable highlight, disable otherwise.
+        // the element parameter is the DOM element for which we should change the highlight
+        function setHighlight(element, highlight) {
+            if (highlight) {
+                element.style.backgroundColor = "#99d8c9";
+            } else {
+                element.style.backgroundColor = "";
+            }
+        }
+
+        // Change visibility of DOM element
+        function toggleVisibility(button, elementId) {
+            var element = document.getElementById(elementId);
+            if (!element) return; // When wrong element ID given, stop executing the function
+
+            // Check if the element is currently visible
+            var isVisible = true;
+            if (element.style.display === "none") {
+                isVisible = false;
+            }
+
+            // Toggle the visibility, and change the name of the button accordingly
+            if (isVisible) {
+                // It was visible, hide now
+                element.style.display = "none";
+                button.innerText = "Show";
+            } else {
+                // It was hidden, show now
+                element.style.display = "";
+                button.innerText = "Hide";
+            }
+        }
+
+    </script>
+
+
+</head>
+<body>
+
+<div style="width: 80%;">
+    This is our main Div element.
+
+    <!-- Change the highlight when mouse enters and leaves the div. the "this" value means "this DOM element" -->
+    <div onmouseenter="setHighlight(this, true)" onmouseleave="setHighlight(this, false)">
+        This is child Div. <i>Move the <b>mouse over</b> it to see some effects.</i>
+        <div id="special-element">
+            This is the special div that can change color.
+
+            <!-- We create two buttons. Clicking on them will call the setDivColor() method with different parameters -->
+            <button onclick="setDivColor(color1)">Set color 1</button>
+            <button onclick="setDivColor(color2)">Set color 2</button>
+        </div>
+
+        <button onclick="toggleVisibility(this, 'second-div')">Hide</button>
+        <div id="second-div">This is the second div. You can show and hide it with the button above this one.</div>
+    </div>
+
+</div>
+
+</body>
+
+</html>
