@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Bar chart with colors</title>
+
+    <!-- This example shows an upgraded bar chart: it will display one categorical attribute as a color
+    and one quantitative attribute as bar length.
+     -->
+
+    <script type="text/javascript" src="javascripts/d3.min.js"></script>
+
+    <style type="text/css">
+        .bar {
+            padding: 3px;
+            margin: 1px;
+            height: 10px;
+        }
+
+        #bar-chart-container {
+            width: 400px;
+            border: 1px solid #909090;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- This is the placeholder for our bars. We don't create any bar there yet, it will be
+    done by the D3 code later. -->
+<div id="bar-chart-container">
+
+</div>
+
+<script type="text/javascript">
+
+    // Define our data values as an array (list) of objects. Instead of holding plain integers,
+    // each object now has two attributes: color and value
+    var dataVals = [
+        {color: "#237c9e", value: 80},
+        {color: "#d95f02", value: 20},
+        {color: "#7570b3", value: 60},
+        {color: "#e7298a", value: 150},
+        {color: "#66a61e", value: 120}
+    ];
+
+    // Select the div which will contain our bars
+    var barContainerDiv = d3.select("#bar-chart-container");
+
+
+    // Create the new divs - one for each data value
+    var newDivs = barContainerDiv.selectAll("div")
+        .data(dataVals)
+        .enter()
+        .append("div");
+
+    // Set class="bar"
+    newDivs.attr("class", "bar");
+
+
+    // Use the attributes to set width and color for the bars
+    newDivs
+        .style("width", function (dataObject) {
+            return dataObject.value * 2 + "px";
+        })
+        .style("background-color", function (dataObject) {
+            return dataObject.color;
+        });
+
+</script>
+
+</body>
+
+</html>
