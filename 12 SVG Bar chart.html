@@ -1,0 +1,78 @@
+<html>
+<head>
+    <title>Color mapping</title>
+
+    <!--
+    This example shows a bar chart similar to previous, just using SVG instead of DIVs.
+     -->
+
+    <script type="text/javascript" src="javascripts/d3.min.js"></script>
+
+</head>
+<body>
+
+<!-- This is the placeholder for another bar chart -->
+<h1>GDP in total, M USD</h1>
+<div id="gdp-chart-container" class="chart-container">
+
+</div>
+
+
+<script type="text/javascript">
+
+    // Nordic country 2017-estimated data from Wikipedia
+    var country_data = [
+        {country: "Norway", gdp: 377.100, population: 5267146},
+        {country: "Sweden", gdp: 498.130, population: 10065389},
+        {country: "Denmark", gdp: 264.837, population: 5748769},
+        {country: "Finland", gdp: 239.662, population: 5506312},
+        {country: "Iceland", gdp: 18.000, population: 332529}
+    ];
+
+
+
+    // Select the div which will contain our bars
+    var gdpChart = d3.select("#gdp-chart-container");
+
+    // Create SVG canvas inside it
+    var canvas = gdpChart.append("svg");
+    canvas.attr("width", "800px");
+    canvas.attr("height", "300px");
+
+    // Create the new divs - one for each data value
+    var dataEnter = canvas.selectAll("rect")
+        .data(country_data)
+        .enter();
+    var barRects = dataEnter.append("rect");
+
+    // Set class="bar"
+    barRects.attr("class", "bar");
+
+
+    var BAR_HEIGHT = 20;
+
+    // Use the index and GDP value to set width and position the bar
+    barRects
+        .attr("x", 0)
+        .attr("y", function (countryData, index) { return index * (BAR_HEIGHT + 2); })
+        .attr("height", BAR_HEIGHT)
+        .attr("width", function(countryData) { return Math.round(countryData.gdp) + "px"; })
+        .attr("fill", "#485ee5")
+    ;
+
+    // Show the values as text - these will be added as text elements in the SVG
+    // To add the texts we select the same dataEnter object - a selection of virtual items for each data item
+    var barTexts = dataEnter.append("text");
+    barTexts.text(function(countryData) { return countryData.gdp; })
+    barTexts
+        .attr("x", function(countryData) { return Math.round(countryData.gdp) + 3 + "px"; })
+        .attr("y", function (d, index) { return (index + 1) * (BAR_HEIGHT + 2) - BAR_HEIGHT / 2 + 1; })
+        .attr("font-size", 10)
+        .attr("fill", "black");
+
+
+</script>
+
+</body>
+
+</html>
