@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>SVG Bar chart</title>
+
+    <!-- This example shows how to draw shapes on SVG Canvas. SVG is a powerful way to draw custom
+     2D graphics. For all SVG possibilities see https://www.w3schools.com/graphics/svg_feoffset.asp
+     -->
+
+</head>
+<body>
+
+    <!-- This is the SVG canvas. We can draw shapes in it -->
+    <svg width="600" height="400">
+        <!-- A black rectangle -->
+        <rect height="100" width="50" x="20" y="10"></rect>
+
+        <!-- Rectangle with green fill and blue border -->
+        <rect height="50" width="100" x="200" y="300" fill="green" stroke="blue"></rect>
+
+        <!-- Note that SVG coordinates start from top-left corner and go to right-bottom -->
+
+        <!-- Let's draw some circles and lines -->
+        <circle r="20" fill="purple" stroke="blue" cx="200" cy="50"></circle>
+
+        <line x1="80" y1="80" x2="100" y2="200" stroke="#0000aa" stroke-width="10"></line>
+
+        <!-- And finally - some text -->
+        <text fill="#008800" x="300" y="20" font-style="italic" font-weight="bold" font-size="20">Hello from SVG!</text>
+
+        <!-- We can apply transform to elements. Such as rotation. -->
+        <text fill="#000088" x="300" y="220" font-size="20">Non-rotated text</text>
+        <text fill="#000088" x="300" y="220" font-size="20" transform="rotate(270, 300, 220)">Rotated text</text>
+
+    </svg>
+
+</body>
+
+</html>
