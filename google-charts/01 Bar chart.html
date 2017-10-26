@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Bar chart</title>
+
+    <!-- This example creates a simple bar chart using Google Charts API.
+    See the Javascript code at the end of the file
+     -->
+
+    <!-- Include Google Charts API library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style type="text/css">
+        #bar-chart-container {
+            width: 600px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- This is the placeholder for our bar chart. We don't create any bar there yet, it will be
+    done by the Google Charts API code later. -->
+<div id="bar-chart-container">
+
+</div>
+
+<script type="text/javascript">
+
+    // Here we say - please, load the Google Charts library, and when it is ready, call the function drawCharts()
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+
+    // Nordic country 2017-estimated data from Wikipedia
+
+    // First element in the array represents the "Title row", it contains column names
+    // All other rows contain a list of values. I.e., it is almost a 1:1 representation of a CSV file
+    // Read more on DataTable structure here: https://developers.google.com/chart/interactive/docs/datatables_dataviews
+    var country_data = [
+        ["Country", "GDP"],
+        ["Norway", 377.100],
+        ["Sweden", 498.130],
+        ["Denmark", 264.837],
+        ["Finland", 239.662],
+        ["Iceland", 18.000]
+    ];
+
+    var options = {
+        title: 'GDP of Scandinavian Countries',
+        hAxis: {
+            title: 'Total GDP, M USD',
+            minValue: 0
+        },
+        vAxis: {
+            title: 'Country'
+        }
+    };
+
+    // This function draws the charts
+    function drawCharts() {
+        // We have to convert our data to the DataTable format that Google Charts can understand
+        var data_table = google.visualization.arrayToDataTable(country_data);
+
+        var chart = new google.visualization.BarChart(document.getElementById('bar-chart-container'));
+        chart.draw(data_table, options);
+    }
+
+</script>
+
+</body>
+
+</html>
