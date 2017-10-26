@@ -77,7 +77,6 @@
     // first one for normal values, one for extremely high values, one for extremely low values
     // And we specify that the normal range is mean +- normal_range * standardDeviation
     function addStyleColumn(data_table, value_column_index, normal_range, normal_color, high_color, low_color) {
-
         var values = getColumnValues(data_table, value_column_index);
 
         // Get statistics for values
