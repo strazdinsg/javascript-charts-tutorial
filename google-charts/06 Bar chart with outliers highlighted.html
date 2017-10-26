@@ -8,9 +8,13 @@
     <!-- Include Google Charts API library -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+    <!-- Include Math library - for min, max, stddev -->
+    <script type="text/javascript" src="../javascripts/math.min.js"></script>
+
     <style type="text/css">
         #bar-chart-container {
-            width: 600px;
+            width: 400px;
+            height: 400px;
         }
     </style>
 
@@ -30,21 +34,21 @@
     google.charts.setOnLoadCallback(drawCharts);
 
 
-    // Nordic country 2017-estimated data from Wikipedia
+    // Imaginary sales agent performance data
     var country_data = [
-        ["Agent", "Sales, USD"],
+        ["Agent", "Sales"],
         ["Tom", 37000],
-        ["Tim", 32000],
+        ["Mark", 6000],
         ["Bill", 28000],
         ["John", 59000],
-        ["Mark", 6000],
+        ["Tim", 32000],
         ["Zack", 27000]
     ];
 
     var options = {
         title: 'Sales agent performance',
         hAxis: {
-            title: 'Sales, USD',
+            title: 'Sales, USD'
         },
         vAxis: {
             title: 'Agent'
@@ -57,18 +61,67 @@
         // We have to convert our data to the DataTable format that Google Charts can understand
         var data_table = google.visualization.arrayToDataTable(country_data);
 
-        // Get all values
-        var vals = getValues(country_data, 1);
+        // Add one column to the table which will contain the color. We specify three colors:
+        // first one for normal values, one for extremely high values, one for extremely low values
+        // And we specify that the normal range is calculated for column #1: mean +- 1.0 * standardDeviation
+        addStyleColumn(data_table, 1, 1.0,
+            "#3182bd",
+            "#2ca25f",
+            "#de2d26");
 
-        var chart = new google.visualization.BarChart(document.getElementById('bar-chart-container'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('bar-chart-container'));
         chart.draw(data_table, options);
     }
 
-    // Get statistics for one column in a Google DataTable object
-    // It returns an object containing min, max, avg and std , where avg = average value, std = standard deviation
-    function getColumnStats(googleDataTable, columnIndex, skipFirst) {
-        for (var i = 0; i < dataMatrix)
+    // Add one column to the table which will contain the color. We specify three colors:
+    // first one for normal values, one for extremely high values, one for extremely low values
+    // And we specify that the normal range is mean +- normal_range * standardDeviation
+    function addStyleColumn(data_table, value_column_index, normal_range, normal_color, high_color, low_color) {
+
+        var values = getColumnValues(data_table, value_column_index);
+
+        // Get statistics for values
+        var stats = getStats(values);
+        // Calculate normal range: mean +/- standard deviation
+        var normal_max = stats.mean + normal_range * stats.std;
+        var normal_min = stats.mean - normal_range * stats.std;
+
+        // Add new column that will represent a style element (color)
+        var style_column_index = data_table.addColumn({ role: 'style', type: 'string'});
+
+        // Now we go through all the values and set the color
+        for (var i = 0; i < values.length; ++i) {
+            var color = normal_color;
+            if (values[i] > normal_max) {
+                // value > mean + r * std_dev
+                color = high_color;
+            } else if (values[i] < normal_min) {
+                // value < mean - r * std_dev
+                color = low_color;
+            }
+            data_table.setValue(i, style_column_index, color);
+        }
     }
+
+    // Get all values from one column in a Google DataTable object
+    function getColumnValues(data_table, column_index) {
+        // Create an empty array with n values (n = rowCount), and copy the values from DataTable
+        var rowCount = data_table.getNumberOfRows();
+        var values = new Array(rowCount);
+        for (var i = 0; i < rowCount; ++i) {
+            values[i] = data_table.getValue(i, column_index);
+        }
+        return values;
+    }
+
+    // Get statistics for an array of values
+    // It returns an object containing min, max, avg and std , where avg = average value, std = standard deviation
+    function getStats(values) {
+        // P.S. running min, max, sum and avg separately is not efficient, but easier to understand :)
+        return { min: math.min(values), max: math.max(values), mean: math.mean(values), std: math.std(values) };
+    }
+
+
 
 </script>
 
