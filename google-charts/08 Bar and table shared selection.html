@@ -1,0 +1,116 @@
+<html>
+<head>
+    <title>Bar and table charts share selection</title>
+
+    <!-- This example shows a Column chart which shares selection with a table -->
+
+    <!-- Include Google Charts API library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style type="text/css">
+        .chart-container {
+            margin: 10px;
+            padding: 20px;
+            float: left;
+            border: 1px solid #616161;
+            border-radius: 10px;
+        }
+        #bar-chart-container {
+            width: 400px;
+            height: 400px;
+        }
+        #table-chart-container {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>Sales agent performance</h1>
+<p>Selection is shared between bars and table.</p>
+<div id="bar-chart-container" class="chart-container"></div>
+<div id="table-chart-container" class="chart-container"></div>
+
+
+<script type="text/javascript">
+
+    google.charts.load('current', {packages: ['corechart', 'table']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+    var column_chart = null; // Theses variable will be initialised later when we create the chart
+    var table_chart = null;
+
+    // Imaginary sales agent performance data
+    // We wil show only the Sales column in the chart, and age in the detail view
+    var sales_data = [
+        ["Agent", "Sales"],
+        ["Tom", 37000],
+        ["Mark", 6000],
+        ["Bill", 28000],
+        ["John", 59000],
+        ["Tim", 32000],
+        ["Zack", 27000]
+    ];
+
+    var column_options = {
+        vAxis: {
+            title: 'Sales, USD'
+        },
+        hAxis: {
+            title: 'Agent'
+        },
+        legend: { position: "none" } // Hide the legend
+    };
+
+    var table_options = {
+        showRowNumber: true,
+        width: '100%',
+        height: '100%'
+    };
+
+    // This function draws the charts
+    function drawCharts() {
+        // We have to convert our data to the DataTable format that Google Charts can understand
+        var data_table = google.visualization.arrayToDataTable(sales_data);
+
+        showColumnChart(data_table, column_options);
+        showTableChart(data_table, table_options);
+
+    }
+
+    function showColumnChart(data_table, options) {
+        column_chart = new google.visualization.ColumnChart(document.getElementById('bar-chart-container'));
+        column_chart.draw(data_table, options);
+        // Add listener for click events
+        google.visualization.events.addListener(column_chart, 'select', onBarClicked);
+    }
+
+    function showTableChart(data_table, options) {
+        table_chart = new google.visualization.Table(document.getElementById('table-chart-container'));
+        table_chart.draw(data_table, options);
+        // Add listener for click events
+        google.visualization.events.addListener(table_chart, 'select', onTableClicked);
+    }
+
+
+    // This function is called when a bar is selected (clicked) in the column chart
+    function onBarClicked() {
+        // Set the same selection for table. However, table does not accept "column" as part of selection, remove it
+        var selection = column_chart.getSelection();
+        delete selection[0].column;
+        table_chart.setSelection(selection);
+    }
+
+    // This function is called when a cell is selected (clicked) in the table chart
+    function onTableClicked() {
+        // Set the same selection for table
+        column_chart.setSelection(table_chart.getSelection());
+    }
+
+</script>
+
+</body>
+
+</html>
