@@ -30,7 +30,7 @@
 <script type="text/javascript">
 
     // Here we say - please, load the Google Charts library, and when it is ready, call the function drawCharts()
-    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.load('current', {packages: ['corechart']});
     google.charts.setOnLoadCallback(drawCharts);
 
 
@@ -47,10 +47,10 @@
 
     var options = {
         title: 'Sales agent performance',
-        hAxis: {
+        vAxis: {
             title: 'Sales, USD'
         },
-        vAxis: {
+        hAxis: {
             title: 'Agent'
         },
         legend: { position: "none" } // Hide the legend
