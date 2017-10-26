@@ -35,7 +35,7 @@
 
 
     // Imaginary sales agent performance data
-    var country_data = [
+    var sales_data = [
         ["Agent", "Sales"],
         ["Tom", 37000],
         ["Mark", 6000],
@@ -59,7 +59,7 @@
     // This function draws the charts
     function drawCharts() {
         // We have to convert our data to the DataTable format that Google Charts can understand
-        var data_table = google.visualization.arrayToDataTable(country_data);
+        var data_table = google.visualization.arrayToDataTable(sales_data);
 
         // Add one column to the table which will contain the color. We specify three colors:
         // first one for normal values, one for extremely high values, one for extremely low values
