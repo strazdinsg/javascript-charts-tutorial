@@ -1,0 +1,77 @@
+<html>
+<head>
+    <title>Bar chart with outliers highlighted</title>
+
+    <!-- Create a bar chart where some bars are highlighted in different colors, based on their value
+     -->
+
+    <!-- Include Google Charts API library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style type="text/css">
+        #bar-chart-container {
+            width: 600px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- This is the placeholder for our bar chart. We don't create any bar there yet, it will be
+    done by the Google Charts API code later. -->
+<div id="bar-chart-container">
+
+</div>
+
+<script type="text/javascript">
+
+    // Here we say - please, load the Google Charts library, and when it is ready, call the function drawCharts()
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+
+    // Nordic country 2017-estimated data from Wikipedia
+    var country_data = [
+        ["Agent", "Sales, USD"],
+        ["Tom", 37000],
+        ["Tim", 32000],
+        ["Bill", 28000],
+        ["John", 59000],
+        ["Mark", 6000],
+        ["Zack", 27000]
+    ];
+
+    var options = {
+        title: 'Sales agent performance',
+        hAxis: {
+            title: 'Sales, USD',
+        },
+        vAxis: {
+            title: 'Agent'
+        },
+        legend: { position: "none" } // Hide the legend
+    };
+
+    // This function draws the charts
+    function drawCharts() {
+        // We have to convert our data to the DataTable format that Google Charts can understand
+        var data_table = google.visualization.arrayToDataTable(country_data);
+
+        // Get all values
+        var vals = getValues(country_data, 1);
+
+        var chart = new google.visualization.BarChart(document.getElementById('bar-chart-container'));
+        chart.draw(data_table, options);
+    }
+
+    // Get statistics for one column in a Google DataTable object
+    // It returns an object containing min, max, avg and std , where avg = average value, std = standard deviation
+    function getColumnStats(googleDataTable, columnIndex, skipFirst) {
+        for (var i = 0; i < dataMatrix)
+    }
+
+</script>
+
+</body>
+
+</html>
