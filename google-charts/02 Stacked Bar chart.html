@@ -1,0 +1,74 @@
+<html>
+<head>
+    <title>Stacked bar charts</title>
+
+    <!-- This example creates stacked bar charts: one absolute values and one normalized (relative). -->
+
+    <!-- Include Google Charts API library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style type="text/css">
+        .bar-chart-container {
+            width: 500px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- These are the placeholders for our bar charts. We don't create any bar there yet, it will be
+    done by the Google Charts API code later. -->
+<div id="absolute-bar-chart-container" class="bar-chart-container"></div>
+<div id="relative-bar-chart-container" class="bar-chart-container"></div>
+
+<script type="text/javascript">
+
+    // Here we say - please, load the Google Charts library, and when it is ready, call the function drawCharts()
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+    // Example from: https://developers.google.com/chart/interactive/docs/gallery/barchart
+    var movie_data = [
+        ['Genre', 'Fantasy & Sci Fi', 'Romance', 'Mystery/Crime', 'General',
+            'Western', 'Literature', { role: 'annotation' } ],
+        ['2010', 10, 24, 20, 32, 18, 5, ''],
+        ['2020', 16, 22, 23, 30, 16, 9, ''],
+        ['2030', 28, 19, 29, 30, 12, 13, '']
+    ];
+
+    var options = {
+        height: 400,
+        legend: { position: 'top', maxLines: 3 },
+        bar: { groupWidth: '75%' },
+        title: "Book sales by genre"
+    };
+
+    // This function draws the charts
+    function drawCharts() {
+        drawAbsoluteChart();
+        drawRelativeChart();
+    }
+
+    function drawAbsoluteChart() {
+        // Make sure we have absolute stacked bar chart
+        options.isStacked = "absolute";
+
+        var data_table = google.visualization.arrayToDataTable(movie_data);
+        var chart = new google.visualization.BarChart(document.getElementById('absolute-bar-chart-container'));
+        chart.draw(data_table, options);
+    }
+
+    function drawRelativeChart() {
+        // Make sure we have relative stacked bar chart
+        options.isStacked = "percent";
+
+        var data_table = google.visualization.arrayToDataTable(movie_data);
+        var chart = new google.visualization.BarChart(document.getElementById('relative-bar-chart-container'));
+        chart.draw(data_table, options);
+    }
+
+</script>
+
+</body>
+
+</html>
