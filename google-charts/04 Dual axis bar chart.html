@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>Bar chart</title>
+
+    <!-- This example creates a dual-axis bar chart using Google Charts API.
+    Dual-axis bar chart is supported only by Material charts!
+     -->
+
+    <!-- Include Google Charts API library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</head>
+<body>
+
+<div id="bar-chart-container"></div>
+
+<script type="text/javascript">
+
+    google.charts.load('current', {packages: ['bar']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+
+    // Nordic country 2017-estimated data from Wikipedia
+    var country_data = [
+        ["Country", "GDP", "Population"],
+        ["Norway", 377.100, 5267146],
+        ["Sweden", 498.130, 10000000],
+        ["Denmark", 264.837, 5748769],
+        ["Finland", 239.662, 5506312],
+        ["Iceland", 18.000, 332529]
+    ];
+
+
+    // Example adapted from https://developers.google.com/chart/interactive/docs/gallery/barchart
+    var options = {
+        width: 800,
+        height: 400,
+        chart: {
+            title: 'Statistics of Scandinavian countries',
+            subtitle: 'GDP and population'
+        },
+        bars: 'horizontal',
+        series: {
+            0: { axis: 'GDP' }, // Bind series 0 to an axis named 'GDP'.
+            1: { axis: 'population' } // Bind series 1 to an axis named 'population'.
+        },
+        axes: {
+            x: {
+                GDP: {side: 'top', label: 'M USD' }, // Left y-axis.
+                population: {side: 'bottom', label: 'Number of people'} // Right y-axis.
+            }
+        }
+    };
+    // This function draws the charts
+    function drawCharts() {
+        // We have to convert our data to the DataTable format that Google Charts can understand
+        var data_table = google.visualization.arrayToDataTable(country_data);
+
+        var chart = new google.charts.Bar(document.getElementById('bar-chart-container'));
+        chart.draw(data_table, options);
+    }
+
+</script>
+
+</body>
+
+</html>
