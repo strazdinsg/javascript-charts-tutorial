@@ -93,10 +93,11 @@
         // We have to convert our data to the DataTable format that Google Charts can understand
         var data_table = google.visualization.arrayToDataTable(sales_data);
         // Keep only the first two columns: name and sales
-        data_table.removeColumns(2, 1);
+        var data_view = new google.visualization.DataView(data_table);
+        data_view.setColumns([0, 1]);
 
         chart = new google.visualization.ColumnChart(document.getElementById('bar-chart-container'));
-        chart.draw(data_table, options);
+        chart.draw(data_view, options);
 
         // Add listener for click events
         google.visualization.events.addListener(chart, 'select', onBarClicked);
