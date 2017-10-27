@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>Loading data from CSV file</title>
+
+    <!--
+    This example loads data from a CSV file and shows it on a bar chart.
+     -->
+
+    <!-- Include Google Charts API library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- Include jQuery core library and one for parsing CSV strings -->
+    <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.csv.min.js"></script>
+
+</head>
+<body>
+
+
+
+<p>This example will only work if you serve this website from a server. If you use WebStorm editor,
+    open it with View > Open in Browser > ... . If you open this as a local HTML file, your browser will not allow
+    to request the CSV file - reading local files is not allowed as a rule.</p>
+<p>There is one important consequence: we can not load the chart directly when the page is loaded.
+    Instead, we request the CSV file and then load the chart when response comes.</p>
+
+<h1>GDP per capita, M USD</h1>
+
+<!-- This is the placeholder for bar chart: GDP per capita -->
+<div id="bar-chart-container"></div>
+
+
+
+<script type="text/javascript">
+
+    // Here we say - please, load the Google Charts library, and when it is ready,
+    // call the function requestData()
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(requestData);
+
+
+    // Send request to read CSV file content, and when a successful response is received,
+    // call the drawCharts() function. The received data is passed as a string to the function.
+    function requestData() {
+        $.get("../data/country_data.csv", drawCharts);
+    }
+
+    // This function is called when response from the CSV data request comes
+    // It draws the charts
+    function drawCharts(csv_string) {
+        // Convert the CSV-string to a 2D array
+        var country_data = $.csv.toArrays(csv_string, {onParseValue: $.csv.hooks.castToScalar});
+
+        // We have to convert our data to the DataTable format that Google Charts can understand
+        var data_table = google.visualization.arrayToDataTable(country_data);
+        // Select only the one column to show: GDP
+        var data_view = new google.visualization.DataView(data_table);
+        data_view.setColumns([0, 1]);
+
+        var options = {
+            title: 'GDP of Scandinavian Countries',
+            hAxis: {
+                title: 'Total GDP, M USD',
+                minValue: 0
+            },
+            vAxis: {
+                title: 'Country'
+            },
+            legend: {position: "none"} // Hide the legend
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('bar-chart-container'));
+        chart.draw(data_view, options);
+    }
+
+
+
+</script>
+
+</body>
+
+</html>
