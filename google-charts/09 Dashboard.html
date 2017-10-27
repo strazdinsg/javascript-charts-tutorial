@@ -1,0 +1,102 @@
+<html>
+<head>
+    <title>Bar and table charts share selection</title>
+
+    <!-- This example shows a Dashboard - general concept that allows to merge several charts and controls together
+      We start simple: one chart and one control.
+      For more explanation on dashboards and controls see https://developers.google.com/chart/interactive/docs/gallery/controls
+       -->
+
+    <!-- Include Google Charts API library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style type="text/css">
+        .chart-container {
+            margin: 10px;
+            padding: 20px;
+            float: left;
+            border: 1px solid #616161;
+            border-radius: 10px;
+        }
+        #bar-chart-container {
+            width: 400px;
+            height: 400px;
+            margin: auto;
+        }
+        #dashboard-container {
+            width: 600px;
+            height: 600px;
+        }
+    </style>
+
+</head>
+<body>
+
+<h1>Sales agent performance</h1>
+<p>Adjust the slider to filter agents shown in the chart.</p>
+<div id="dashboard-container" class="chart-container">
+    <!-- Filter control container -->
+    <div id="filter-container"></div>
+    <!-- Bar chart container-->
+    <div id="bar-chart-container" class="chart-container"></div>
+</div>
+
+
+<script type="text/javascript">
+
+    google.charts.load('current', {packages: ['corechart', 'controls']});
+    google.charts.setOnLoadCallback(drawCharts);
+
+    // Imaginary sales agent performance data
+    var sales_data = [
+        ["Agent", "Sales"],
+        ["Tom", 37000],
+        ["Mark", 6000],
+        ["Bill", 28000],
+        ["John", 59000],
+        ["Tim", 32000],
+        ["Zack", 27000]
+    ];
+
+    // This function draws the charts
+    function drawCharts() {
+        // Create a dashboard
+        var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard-container'));
+
+        // Create a range slider, passing some options
+        var sales_range_slider = new google.visualization.ControlWrapper({
+            'controlType': 'NumberRangeFilter',
+            'containerId': 'filter-container',
+            'options': {
+                'filterColumnLabel': 'Sales'
+            }
+        });
+
+        // Create column chart
+        var column_chart = new google.visualization.ChartWrapper({
+            'chartType': 'ColumnChart',
+            'containerId': 'bar-chart-container',
+            'options': {
+                vAxis: {
+                    title: 'Sales, USD'
+                },
+                hAxis: {
+                    title: 'Agent'
+                },
+                legend: { position: "none" } // Hide the legend
+            }
+        });
+
+        // We have to convert our data to the DataTable format that Google Charts can understand
+        var data_table = google.visualization.arrayToDataTable(sales_data);
+
+        // Bind the filter control together with the column chart
+        dashboard.bind(sales_range_slider, column_chart);
+        dashboard.draw(data_table);
+    }
+
+</script>
+
+</body>
+
+</html>
