@@ -86,11 +86,11 @@ Instead, we request the CSV file and then load the chart when response comes.</p
             return getGdpPerCapita(countryData) * 3 + "px";
         });
         pcBarDivs.style("background-color", function (countryData) {
-            return getColor(countryData.country);
+            return getColor(countryData.Country);
         });
         // Set the text
         pcBarDivs.text(function (countryData) {
-            return countryData.country + ": $" + getGdpPerCapita(countryData) + "M";
+            return countryData.Country + ": $" + getGdpPerCapita(countryData) + "M";
         });
     }
 
@@ -105,7 +105,7 @@ Instead, we request the CSV file and then load the chart when response comes.</p
 
     // Calculate GPD per capita, round to millions with three decimal digits
     function getGdpPerCapita(countryData) {
-        return Math.round(countryData.gdp * 1000000000 / countryData.population) / 1000;
+        return Math.round(countryData.GDP * 1000000000 / countryData.Population) / 1000;
     }
 
     // This function defines mapping between countries and colors. It has a list of allowed colors.
@@ -113,12 +113,12 @@ Instead, we request the CSV file and then load the chart when response comes.</p
     // Next time when we want to get color for the same country, the same color will be returned
     function getColor(country) {
         for (var i = 0; i < COLOR_MAP.length; ++i) {
-            if (COLOR_MAP[i].country === country) {
+            if (COLOR_MAP[i].Country === country) {
                 // Country already registered, return color for it
                 return COLOR_MAP[i].color;
-            } else if (!COLOR_MAP[i].country) {
+            } else if (!COLOR_MAP[i].Country) {
                 // No more countries registered in the color map, assign this country to a new color
-                COLOR_MAP[i].country = country;
+                COLOR_MAP[i].Country = country;
                 return COLOR_MAP[i].color;
             }
         }
