@@ -49,13 +49,13 @@
 
     // Imaginary sales agent performance data
     var sales_data = [
-        ["Agent", "Sales"],
-        ["Tom", 37000],
-        ["Mark", 6000],
-        ["Bill", 28000],
-        ["John", 59000],
-        ["Tim", 32000],
-        ["Zack", 27000]
+        ["Agent", "Sales", "Age"],
+        ["Tom", 37000, 25],
+        ["Mark", 6000, 18],
+        ["Bill", 28000, 30],
+        ["John", 59000, 42],
+        ["Tim", 32000, 30],
+        ["Zack", 27000, 22]
     ];
 
     // This function draws the charts
@@ -84,6 +84,10 @@
                     title: 'Agent'
                 },
                 legend: { position: "none" } // Hide the legend
+            },
+            'view': {
+                // Show only name and sales
+                'columns': [0, 1]
             }
         });
 
